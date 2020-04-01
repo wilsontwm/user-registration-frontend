@@ -1,5 +1,5 @@
 <template>
-    <div id="login" class="text-center">
+    <div id="signup">
         <SignupForm />
         <small>Already have an account? Click <router-link class="" to="/login">here</router-link> to login now.</small>
     </div>
@@ -15,8 +15,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#login {
+#signup {
    width: 580px;
-   margin: 150px auto 20px auto; 
+   margin: 120px auto 20px auto; 
 }
 </style>

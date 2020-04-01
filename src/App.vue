@@ -1,15 +1,22 @@
 <template>
   <div id="app">
     <NavBar />
+    <Alert />
     <router-view/>
   </div>
 </template>
 <script>
 import NavBar from '@/components/NavBar.vue'
+import Alert from '@/components/Alert.vue'
 export default {
   name: 'App',
   components: {
-    NavBar
+    NavBar, Alert
+  },
+  watch: {
+    $route (to, from) {
+      document.title = to.meta.title || 'User Registration & Authentication';
+    }
   }
 }
 </script>
