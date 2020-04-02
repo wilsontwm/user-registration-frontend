@@ -24,34 +24,38 @@ const actions = {
         commit('logout');
         router.push('/');
     },
-    signup({dispatch, commit}, user) {
+    async signup({dispatch, commit}, user) {
         commit('signupRequest', user);
-        userService.signup(user)
-        .then(
-            data => {
-                commit('signupSuccess', data);
-                dispatch('alert/success', "You have successfully signed up.", {root:true});
-            }, 
-            error => {
-                commit('signupFailure', error);
-                dispatch('alert/error', error, {root:true});
-            }
-        )
+        return userService.signup(user)
+                .then(
+                    data => {
+                        commit('signupSuccess', data);
+                        dispatch('alert/success', "You have successfully signed up.", {root:true});
+                        return data;
+                    }, 
+                    error => {
+                        commit('signupFailure', error);
+                        dispatch('alert/error', error, {root:true});
+                        return {success: false, error: error};
+                    }
+                )
     },
-    forgetPassword({dispatch, commit}, {email}) {
+    async forgetPassword({dispatch, commit}, {email}) {
         commit('forgetPasswordRequest', {email});
-        userService.forgetPassword(email)
-        .then(
-            data => {
-                commit('forgetPasswordSuccess', data);
-                dispatch('alert/success', "An email to reset password has been sent to you. Please follow the instruction to reset password.", {root:true});
-            }, 
-            error => {
-                commit('forgetPasswordFailure', error);
-                dispatch('alert/error', error, {root:true});
+        return userService.forgetPassword(email)
+                .then(
+                    data => {
+                        commit('forgetPasswordSuccess', data);
+                        dispatch('alert/success', "An email to reset password has been sent to you. Please follow the instruction to reset password.", {root:true});
+                        return data;
+                    }, 
+                    error => {
+                        commit('forgetPasswordFailure', error);
+                        dispatch('alert/error', error, {root:true});
+                        return {success: false, error: error};
+                    }
+                )
             }
-        )
-    }
 }
 
 const mutations = {

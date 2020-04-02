@@ -34,11 +34,18 @@ export default {
     },
     methods: {
         ...mapActions('auth', ['forgetPassword']),
+        resetForm() {
+            this.email = '';
+            this.$refs.observer.reset();
+        },
         async handleSubmit(e) {
             const { email } = this;
             const isValid = await this.$refs.observer.validate();
             if(isValid) {
-                this.forgetPassword({email});
+                var response = await this.forgetPassword({email});
+                if(response.success) {
+                    this.resetForm();
+                }
             }
         }
     }

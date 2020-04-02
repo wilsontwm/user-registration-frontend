@@ -7,7 +7,7 @@
 import ForgottenPasswordForm from '@/components/auth/forms/ForgottenPasswordForm.vue'
 
 export default {
-    name: "Forgotten Password",
+    name: "ForgottenPassword",
     components: {
         ForgottenPasswordForm
     }

@@ -64,10 +64,20 @@ export default {
     },
     methods: {
         ...mapActions('auth', ['signup']),
+        resetForm() {
+            this.user.name = '';
+            this.user.email = '';
+            this.user.password = '';
+            this.user.confirmPassword = '';
+            this.$refs.observer.reset();
+        },
         async handleSubmit(e) {
             const isValid = await this.$refs.observer.validate();
             if(isValid) {
-                this.signup(this.user);
+                var response = await this.signup(this.user);
+                if(response.success) {
+                    this.resetForm();
+                }
             }
         }
     }
