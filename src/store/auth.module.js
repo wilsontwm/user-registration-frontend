@@ -55,7 +55,35 @@ const actions = {
                         return {success: false, error: error};
                     }
                 )
-            }
+    },
+    async resetPassword({dispatch, commit}, {resetPasswordCode, password}) {
+        commit('resetPasswordRequest', {resetPasswordCode, password});
+        return userService.resetPassword(resetPasswordCode, password)
+                .then(
+                    data => {
+                        commit('resetPasswordSuccess', data);
+                        dispatch('alert/success', "You have successfully reset the password.", {root:true});
+                        return data;
+                    }, 
+                    error => {
+                        commit('resetPasswordFailure', error);
+                        dispatch('alert/error', error, {root:true});
+                        return {success: false, error: error};
+                    }
+                )
+    },
+    async activateAccount({dispatch, commit}, {activationCode}) {
+        return userService.activateAccount(activationCode)
+                .then(
+                    data => {
+                        return data;
+                    }, 
+                    error => {
+                        dispatch('alert/error', error, {root:true});
+                        return {success: false, error: error};
+                    }
+                )
+    }
 }
 
 const mutations = {
@@ -91,6 +119,15 @@ const mutations = {
         state.status = {};
     },
     forgetPasswordFailure(state) {
+        state.status = {};
+    },
+    resetPasswordRequest(state) {
+        state.status = {resettingPassword: true};
+    },
+    resetPasswordSuccess(state) {
+        state.status = {};
+    },
+    resetPasswordFailure(state) {
         state.status = {};
     }
 }

@@ -6,7 +6,9 @@ export const userService = {
     login,
     logout,
     signup,
-    forgetPassword
+    forgetPassword,
+    resetPassword,
+    activateAccount
 };
 
 function login(email, password) {
@@ -56,6 +58,26 @@ function forgetPassword(email) {
     };
     
     return fetch(`${apiUrl}/forgetpassword`, requestOption).then(handleResponse);
+}
+
+function resetPassword(resetPasswordCode, password) {
+    const requestOption = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({resetPasswordCode, password})
+    };
+    
+    return fetch(`${apiUrl}/resetpassword`, requestOption).then(handleResponse);
+}
+
+function activateAccount(activationCode) {
+    const requestOption = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({activationCode})
+    };
+    
+    return fetch(`${apiUrl}/activateaccount`, requestOption).then(handleResponse);
 }
 
 function handleResponse(response) {

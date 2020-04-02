@@ -1,7 +1,7 @@
 <template>
     <div id="alert-container" class="container">
         <div class="row">
-            <div class="col-sm-6 offset-sm-3">
+            <div class="col-md-6 offset-md-3">
                 <div v-show="!alert.isRead && alert.message" :class="`alert ${alert.type} alert-dismissible fade show`" role="alert">
                     {{alert.message}}
                     <button v-on:click="closeAlert" type="button" class="close" aria-label="Close">
