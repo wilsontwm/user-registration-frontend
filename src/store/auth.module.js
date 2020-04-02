@@ -37,6 +37,20 @@ const actions = {
                 dispatch('alert/error', error, {root:true});
             }
         )
+    },
+    forgetPassword({dispatch, commit}, {email}) {
+        commit('forgetPasswordRequest', {email});
+        userService.forgetPassword(email)
+        .then(
+            data => {
+                commit('forgetPasswordSuccess', data);
+                dispatch('alert/success', "An email to reset password has been sent to you. Please follow the instruction to reset password.", {root:true});
+            }, 
+            error => {
+                commit('forgetPasswordFailure', error);
+                dispatch('alert/error', error, {root:true});
+            }
+        )
     }
 }
 
@@ -64,6 +78,15 @@ const mutations = {
         state.status = {};
     },
     signupFailure(state) {
+        state.status = {};
+    },
+    forgetPasswordRequest(state) {
+        state.status = {forgettingPassword: true};
+    },
+    forgetPasswordSuccess(state) {
+        state.status = {};
+    },
+    forgetPasswordFailure(state) {
         state.status = {};
     }
 }

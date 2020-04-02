@@ -5,7 +5,8 @@ const apiUrl = process.env.VUE_APP_API_URL;
 export const userService = {
     login,
     logout,
-    signup
+    signup,
+    forgetPassword
 };
 
 function login(email, password) {
@@ -45,6 +46,16 @@ function signup(user) {
     };
     
     return fetch(`${apiUrl}/signup`, requestOption).then(handleResponse);
+}
+
+function forgetPassword(email) {
+    const requestOption = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+    };
+    
+    return fetch(`${apiUrl}/forgetpassword`, requestOption).then(handleResponse);
 }
 
 function handleResponse(response) {

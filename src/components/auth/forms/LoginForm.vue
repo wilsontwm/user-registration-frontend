@@ -21,7 +21,7 @@
                     </div>
                 </ValidationProvider>
                 <div class="form-group">
-                    <small>Forgotten your password? Click <router-link to="/signup">here</router-link></small>
+                    <small>Forgotten your password? Click <router-link to="/forgetpassword">here</router-link></small>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="invalid || status.loggingIn">Login</button>

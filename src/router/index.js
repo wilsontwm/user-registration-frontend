@@ -35,6 +35,14 @@ const routes = [
     component: () => { return import('../views/Signup.vue') }
   },
   {
+    path: '/forgetpassword',
+    name: 'ForgottenPassword',
+    meta: {
+      title: 'Forgotten Password'
+    },
+    component: () => { return import('../views/ForgottenPassword.vue') }
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     meta: {
@@ -61,7 +69,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Redirect to login page if not logged in
-  const publicPages = ['/', '/login', '/signup', '/about', '/error']
+  const publicPages = ['/', '/login', '/signup', '/forgetpassword', '/about', '/error']
   const authRequired = !publicPages.includes(to.path);
   const isLoggedIn = localStorage.getItem('token');
 
