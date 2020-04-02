@@ -23,6 +23,20 @@ const actions = {
         userService.logout();
         commit('logout');
         router.push('/');
+    },
+    signup({dispatch, commit}, user) {
+        commit('signupRequest', user);
+        userService.signup(user)
+        .then(
+            data => {
+                commit('signupSuccess', data);
+                dispatch('alert/success', "You have successfully signed up.", {root:true});
+            }, 
+            error => {
+                commit('signupFailure', error);
+                dispatch('alert/error', error, {root:true});
+            }
+        )
     }
 }
 
@@ -42,6 +56,15 @@ const mutations = {
     logout(state) {
         state.status = {};
         state.user = null;
+    },
+    signupRequest(state, user) {
+        state.status = {signingUp: true};
+    },
+    signupSuccess(state, user) {
+        state.status = {};
+    },
+    signupFailure(state) {
+        state.status = {};
     }
 }
 

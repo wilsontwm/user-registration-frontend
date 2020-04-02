@@ -4,8 +4,8 @@ const apiUrl = process.env.VUE_APP_API_URL;
 
 export const userService = {
     login,
-    logout
-    //signup
+    logout,
+    signup
 };
 
 function login(email, password) {
@@ -37,10 +37,20 @@ function logout() {
     localStorage.removeItem('logout');
 }
 
+function signup(user) {
+    const requestOption = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(user)
+    };
+    
+    return fetch(`${apiUrl}/signup`, requestOption).then(handleResponse);
+}
+
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        if(!response.ok) {
+        if(!response.ok || (data && !data.success)) {
             // Unauthorized access
             if(response.status === 401) {
                 logout();

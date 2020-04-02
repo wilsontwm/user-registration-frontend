@@ -1,6 +1,6 @@
 <template>
     <div id="signup-form">
-        <ValidationObserver v-slot="{ invalid }">
+        <ValidationObserver ref="observer" v-slot="{ invalid }">
             <form class="form-login" @submit.prevent="handleSubmit">
                 <div class="text-center">                    
                     <img class="text-center mb-4" src="@/assets/img/gopher.png" alt="" width="60" height="81">
@@ -9,21 +9,21 @@
                 <ValidationProvider name="Name" rules="required" v-slot="{ errors }">
                     <div class="form-group">
                         <label for="inputName" class="control-label">Name</label>
-                        <input type="text" v-model="name" name="name" id="inputName" :class="`${errors.length ? 'is-invalid' : ''} form-control`" autofocus="">
+                        <input type="text" v-model="user.name" name="name" id="inputName" :class="`${errors.length ? 'is-invalid' : ''} form-control`" autofocus="">
                         <small class="text-danger">{{ errors[0] }}</small>
                     </div>
                 </ValidationProvider>      
                 <ValidationProvider name="Email" rules="required|email" v-slot="{ errors }">
                     <div class="form-group">
                         <label for="inputEmail" class="control-label">Email</label>
-                        <input type="text" v-model="email" name="email" id="inputEmail" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
+                        <input type="text" v-model="user.email" name="email" id="inputEmail" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
                         <small class="text-danger">{{ errors[0] }}</small>
                     </div>
                 </ValidationProvider>
                 <ValidationProvider name="Password" rules="required|min:8" v-slot="{ errors }">
                     <div class="form-group">
                         <label for="inputPassword" class="control-label">Password</label>
-                        <input type="password" v-model="password" name="password" id="inputPassword" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
+                        <input type="password" v-model="user.password" name="password" id="inputPassword" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
                         <small class="text-danger">{{ errors[0] }}</small>
                     </div>
                 </ValidationProvider>
@@ -31,7 +31,7 @@
                 <ValidationProvider name="Confirm Password" rules="required|min:8|password:@Password" v-slot="{ errors }">
                     <div class="form-group">
                         <label for="inputConfirmPassword" class="control-label">Confirm Password</label>
-                        <input type="password" v-model="confirmPassword" name="confirmPassword" id="inputConfirmPassword" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
+                        <input type="password" v-model="user.confirmPassword" name="confirmPassword" id="inputConfirmPassword" :class="`${errors.length ? 'is-invalid' : ''} form-control`">
                         <small class="text-danger">{{ errors[0] }}</small>
                     </div>
                 </ValidationProvider>
@@ -51,22 +51,23 @@ export default {
     name: "SignupForm",
     data () {
         return {
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
+            user: {
+                name: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            }
         }
     },
     computed: {
         ...mapState('auth', ['status'])
     },
     methods: {
-        ...mapActions('auth', ['login', 'logout']),
-        handleSubmit(e) {
-            this.submitted = true;
-            const { email, password } = this;
-            if(email && password) {
-                this.login({email, password})
+        ...mapActions('auth', ['signup']),
+        async handleSubmit(e) {
+            const isValid = await this.$refs.observer.validate();
+            if(isValid) {
+                this.signup(this.user);
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div id="login-form">
-        <ValidationObserver v-slot="{ invalid }">
+        <ValidationObserver ref="observer" v-slot="{ invalid }">
             <form class="form-login" @submit.prevent="handleSubmit">
                 <div class="text-center">                    
                     <img class="text-center mb-4" src="@/assets/img/gopher.png" alt="" width="60" height="81">
@@ -51,9 +51,10 @@ export default {
     },
     methods: {
         ...mapActions('auth', ['login', 'logout']),
-        handleSubmit(e) {
+        async handleSubmit(e) {
             const { email, password } = this;
-            if(email && password) {
+            const isValid = await this.$refs.observer.validate();
+            if(isValid) {
                 this.login({email, password})
             }
         }
